@@ -1,13 +1,12 @@
 package de.dafuqs.arrowhead.api;
 
-import net.minecraft.entity.LivingEntity;
-import net.minecraft.entity.projectile.ProjectileEntity;
-import net.minecraft.item.ItemStack;
-import net.minecraft.util.Hand;
-import net.minecraft.world.World;
-
 import java.util.ArrayList;
 import java.util.List;
+import net.minecraft.world.InteractionHand;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.projectile.Projectile;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.Level;
 
 public interface CrossbowShootingCallback {
 	
@@ -23,7 +22,7 @@ public interface CrossbowShootingCallback {
 	 * @param projectile the projectile stack that was used for shooting
 	 * @param projectileEntity the projectile that was shot (initialized, but not yet spawned in the world)
 	 */
-	void trigger(World world, LivingEntity shooter, Hand hand, ItemStack crossbow, ItemStack projectile, ProjectileEntity projectileEntity);
+	void trigger(Level world, LivingEntity shooter, InteractionHand hand, ItemStack crossbow, ItemStack projectile, Projectile projectileEntity);
 	
 	/**
 	 * Register a ProjectileLaunchCallback

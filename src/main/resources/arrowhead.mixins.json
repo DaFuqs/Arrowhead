@@ -8,7 +8,6 @@
     "CrossbowItemMixin"
   ],
   "client": [
-    "client.AbstractClientPlayerEntityMixin",
     "client.HeldItemRendererMixin"
   ],
   "injectors": {

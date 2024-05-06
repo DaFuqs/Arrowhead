@@ -1,6 +1,6 @@
 package de.dafuqs.arrowhead.api;
 
-import net.minecraft.item.*;
+import net.minecraft.world.item.ItemStack;
 
 /**
  * Implement this interface to your BowItem to get working pulling animations equal to a vanilla bow
