@@ -35,8 +35,6 @@ public abstract class HeldItemRendererMixin {
 	
 	@Shadow protected abstract void applyEquipOffset(MatrixStack matrices, Arm arm, float equipProgress);
 	
-	@Shadow @Final private MinecraftClient client;
-	
 	@Shadow protected abstract void applySwingOffset(MatrixStack matrices, Arm arm, float swingProgress);
 	
 	@Shadow public abstract void renderItem(LivingEntity entity, ItemStack stack, ModelTransformationMode renderMode, boolean leftHanded, MatrixStack matrices, VertexConsumerProvider vertexConsumers, int light);
@@ -103,7 +101,7 @@ public abstract class HeldItemRendererMixin {
 				matrices.multiply(RotationAxis.POSITIVE_X.rotationDegrees(-11.935F));
 				matrices.multiply(RotationAxis.POSITIVE_Y.rotationDegrees((float)i * 65.3F));
 				matrices.multiply(RotationAxis.POSITIVE_Z.rotationDegrees((float)i * -9.785F));
-				float f = (float)item.getMaxUseTime(player) - ((float)this.client.player.getItemUseTimeLeft() - tickDelta + 1.0F);
+				float f = (float)item.getMaxUseTime(player) - (player.getItemUseTimeLeft() - tickDelta + 1.0F);
 				float g = f / (float)CrossbowItem.getPullTime(item, player);
 				if (g > 1.0F) {
 					g = 1.0F;

@@ -9,7 +9,7 @@ import net.minecraft.item.*;
 public interface ArrowheadBow {
 	
 	/**
-	 * The higher this value, the more does the players view zoom in when using
+	 * The higher this value, the more does the player's view zoom in when using
 	 * The normal bow has a zoom of 20
 	 */
 	default float getZoom(ItemStack stack) {
