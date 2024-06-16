@@ -29,8 +29,8 @@ public class CrossbowItemMixin {
 		return original;
 	}
 	
-	@Inject(method = "getPullTime(Lnet/minecraft/item/ItemStack;)I", at = @At("RETURN"), cancellable = true)
-	private static void getPullTime(ItemStack stack, CallbackInfoReturnable<Integer> cir) {
+	@Inject(method = "getPullTime(Lnet/minecraft/item/ItemStack;Lnet/minecraft/entity/LivingEntity;)I", at = @At("RETURN"), cancellable = true)
+	private static void getPullTime(ItemStack stack, LivingEntity user, CallbackInfoReturnable<Integer> cir) {
 		if (stack.getItem() instanceof ArrowheadCrossbow arrowheadCrossbow) {
 			cir.setReturnValue((int) Math.ceil(cir.getReturnValueI() * arrowheadCrossbow.getPullTimeModifier(stack)));
 		}
