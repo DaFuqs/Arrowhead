@@ -5,31 +5,36 @@ import de.dafuqs.arrowhead.api.*;
 import net.minecraft.entity.*;
 import net.minecraft.entity.projectile.*;
 import net.minecraft.item.*;
+import org.jetbrains.annotations.*;
 import org.joml.*;
 import org.spongepowered.asm.mixin.*;
 import org.spongepowered.asm.mixin.injection.*;
 import org.spongepowered.asm.mixin.injection.callback.*;
 
-import java.lang.Math;
-
 @Mixin(CrossbowItem.class)
 public class CrossbowItemMixin {
 	
-	@Inject(method = "getPullTime(Lnet/minecraft/item/ItemStack;Lnet/minecraft/entity/LivingEntity;)I", at = @At("RETURN"), cancellable = true)
-	private static void getPullTime(ItemStack stack, LivingEntity user, CallbackInfoReturnable<Integer> cir) {
-		if (stack.getItem() instanceof ArrowheadCrossbow arrowheadCrossbow) {
-			cir.setReturnValue((int) Math.ceil(cir.getReturnValueI() * arrowheadCrossbow.getPullTimeModifier(stack)));
+	@ModifyVariable(method = "shoot(Lnet/minecraft/entity/LivingEntity;Lnet/minecraft/entity/projectile/ProjectileEntity;IFFFLnet/minecraft/entity/LivingEntity;)V", at = @At("HEAD"), ordinal = 0, argsOnly = true)
+	public float arrowhead$handleCrossbowSpeed(float originalSpeed, LivingEntity shooter, ProjectileEntity projectile, int index, float speed, float divergence, float yaw, @Nullable LivingEntity target) {
+		ItemStack activeStack = shooter.getStackInHand(shooter.getActiveHand());
+		if (activeStack.getItem() instanceof ArrowheadCrossbow arrowheadCrossbow) {
+			originalSpeed *= arrowheadCrossbow.getProjectileVelocityModifier(activeStack);
 		}
+		return originalSpeed;
 	}
 	
-	@Inject(method = "shoot(Lnet/minecraft/entity/LivingEntity;Lnet/minecraft/entity/projectile/ProjectileEntity;IFFFLnet/minecraft/entity/LivingEntity;)V", at = @At(value = "INVOKE", target = "Lnet/minecraft/entity/projectile/ProjectileEntity;setVelocity(DDDFF)V", shift = At.Shift.AFTER))
-	public void arrowhead$handleRangedWeapon(LivingEntity shooter, ProjectileEntity projectile, int index, float speed, float divergence, float yaw, LivingEntity target, CallbackInfo ci, @Local Vector3f vector3f) {
-		ItemStack activeStack = shooter.getActiveItem();
-		
+	@ModifyVariable(method = "shoot(Lnet/minecraft/entity/LivingEntity;Lnet/minecraft/entity/projectile/ProjectileEntity;IFFFLnet/minecraft/entity/LivingEntity;)V", at = @At("HEAD"), ordinal = 1, argsOnly = true)
+	public float arrowhead$handleCrossbowDivergence(float originalDivergence, LivingEntity shooter, ProjectileEntity projectile, int index, float speed, float divergence, float yaw, @Nullable LivingEntity target) {
+		ItemStack activeStack = shooter.getStackInHand(shooter.getActiveHand());
 		if (activeStack.getItem() instanceof ArrowheadCrossbow arrowheadCrossbow) {
-			projectile.setVelocity(vector3f.x(), vector3f.y(), vector3f.z(), speed * arrowheadCrossbow.getProjectileVelocityModifier(activeStack), divergence * arrowheadCrossbow.getDivergenceMod(activeStack));
+			originalDivergence *= arrowheadCrossbow.getDivergenceMod(activeStack);
 		}
-		
+		return originalDivergence;
+	}
+	
+	@Inject(method = "shoot(Lnet/minecraft/entity/LivingEntity;Lnet/minecraft/entity/projectile/ProjectileEntity;IFFFLnet/minecraft/entity/LivingEntity;)V", at = @At(value = "TAIL"))
+	public void arrowhead$crossbowCallbacks(LivingEntity shooter, ProjectileEntity projectile, int index, float speed, float divergence, float yaw, LivingEntity target, CallbackInfo ci, @Local Vector3f vector3f) {
+		ItemStack activeStack = shooter.getStackInHand(shooter.getActiveHand());
 		for(CrossbowShootingCallback callback : CrossbowShootingCallback.callbacks) {
 			callback.trigger(shooter.getWorld(), shooter, activeStack, projectile);
 		}
