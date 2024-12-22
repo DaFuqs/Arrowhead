@@ -1,19 +1,16 @@
 package de.dafuqs.arrowhead.mixin;
 
-import com.llamalad7.mixinextras.injector.ModifyExpressionValue;
-import com.llamalad7.mixinextras.sugar.Local;
+import com.llamalad7.mixinextras.sugar.*;
 import de.dafuqs.arrowhead.api.*;
-import net.minecraft.entity.LivingEntity;
-import net.minecraft.entity.projectile.ProjectileEntity;
-import net.minecraft.item.CrossbowItem;
-import net.minecraft.item.ItemStack;
-import org.joml.Vector3f;
-import org.spongepowered.asm.mixin.Mixin;
-import org.spongepowered.asm.mixin.injection.At;
-import org.spongepowered.asm.mixin.injection.Inject;
-import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
-import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
-import org.spongepowered.asm.mixin.injection.callback.LocalCapture;
+import net.minecraft.entity.*;
+import net.minecraft.entity.projectile.*;
+import net.minecraft.item.*;
+import org.joml.*;
+import org.spongepowered.asm.mixin.*;
+import org.spongepowered.asm.mixin.injection.*;
+import org.spongepowered.asm.mixin.injection.callback.*;
+
+import java.lang.Math;
 
 @Mixin(CrossbowItem.class)
 public class CrossbowItemMixin {
@@ -23,12 +20,6 @@ public class CrossbowItemMixin {
 		if (stack.getItem() instanceof ArrowheadCrossbow arrowheadCrossbow) {
 			cir.setReturnValue((int) Math.ceil(cir.getReturnValueI() * arrowheadCrossbow.getPullTimeModifier(stack)));
 		}
-	}
-	
-	@Inject(method = "shoot(Lnet/minecraft/entity/LivingEntity;Lnet/minecraft/entity/projectile/ProjectileEntity;IFFFLnet/minecraft/entity/LivingEntity;)V",
-			at = @At(value = "INVOKE", target = "Lnet/minecraft/entity/projectile/ProjectileEntity;setVelocity(DDDFF)V", shift = At.Shift.AFTER))
-	private void shoot(LivingEntity shooter, ProjectileEntity projectile, int index, float speed, float divergence, float yaw, LivingEntity target, CallbackInfo ci, @Local Vector3f vector3f) {
-		projectile.arrowhead$setLastCrossbowVelocity(vector3f);
 	}
 	
 	@Inject(method = "shoot(Lnet/minecraft/entity/LivingEntity;Lnet/minecraft/entity/projectile/ProjectileEntity;IFFFLnet/minecraft/entity/LivingEntity;)V", at = @At(value = "INVOKE", target = "Lnet/minecraft/entity/projectile/ProjectileEntity;setVelocity(DDDFF)V", shift = At.Shift.AFTER))

@@ -24,9 +24,7 @@
     "fabricloader": "*"
   },
   "custom": {
-    "loom:injected_interfaces": {
-      "net/minecraft/class_1676": [ "de/dafuqs/arrowhead/internal/ProjectileEntityLastCrossbowVelocityStore" ]
-    },
+    "loom:injected_interfaces": {},
     "modmenu": {
       "badges": [ "library" ]
     }
