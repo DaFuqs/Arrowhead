@@ -4,9 +4,9 @@
   "package": "de.dafuqs.arrowhead.mixin",
   "compatibilityLevel": "JAVA_21",
   "mixins": [
+    "BowItemMixin",
     "CrossbowItemMixin",
-    "ProjectileEntityMixin",
-    "RangedWeaponItemMixin"
+    "ProjectileEntityMixin"
   ],
   "client": [
     "client.AbstractClientPlayerEntityMixin",

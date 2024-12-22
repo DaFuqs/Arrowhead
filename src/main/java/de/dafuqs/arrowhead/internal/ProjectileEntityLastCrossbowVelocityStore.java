@@ -1,11 +1,10 @@
-package de.dafuqs.arrowhead.api.internal;
+package de.dafuqs.arrowhead.internal;
 
 import org.jetbrains.annotations.ApiStatus;
 import org.joml.Vector3f;
 
-// pls dont use outside of arrowhead ;(
 @ApiStatus.Internal
-public interface LastCrossbowVelocityStore {
+public interface ProjectileEntityLastCrossbowVelocityStore {
     Vector3f arrowhead$getLastCrossbowVelocity();
     void arrowhead$setLastCrossbowVelocity(Vector3f vec);
 }

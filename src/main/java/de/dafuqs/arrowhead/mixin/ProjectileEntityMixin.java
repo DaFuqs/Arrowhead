@@ -1,13 +1,12 @@
 package de.dafuqs.arrowhead.mixin;
 
-import de.dafuqs.arrowhead.api.internal.LastCrossbowVelocityStore;
-import net.minecraft.entity.projectile.ProjectileEntity;
-import org.joml.Vector3f;
-import org.spongepowered.asm.mixin.Mixin;
-import org.spongepowered.asm.mixin.Unique;
+import de.dafuqs.arrowhead.internal.*;
+import net.minecraft.entity.projectile.*;
+import org.joml.*;
+import org.spongepowered.asm.mixin.*;
 
 @Mixin(ProjectileEntity.class)
-public class ProjectileEntityMixin implements LastCrossbowVelocityStore {
+public class ProjectileEntityMixin implements ProjectileEntityLastCrossbowVelocityStore {
     @Unique
     private Vector3f arrowhead$lastCrossbowVelocity;
 

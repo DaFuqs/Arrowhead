@@ -18,12 +18,10 @@ public interface CrossbowShootingCallback {
 	 * Only triggers serverside
 	 * @param world the world
 	 * @param shooter the LivingEntity that shot the crossbow
-	 * @param hand the hand that was used for shooting
 	 * @param crossbow the crossbow stack
-	 * @param projectile the projectile stack that was used for shooting
 	 * @param projectileEntity the projectile that was shot (initialized, but not yet spawned in the world)
 	 */
-	void trigger(World world, LivingEntity shooter, Hand hand, ItemStack crossbow, ItemStack projectile, ProjectileEntity projectileEntity);
+	void trigger(World world, LivingEntity shooter, ItemStack crossbow, ProjectileEntity projectileEntity);
 	
 	/**
 	 * Register a ProjectileLaunchCallback

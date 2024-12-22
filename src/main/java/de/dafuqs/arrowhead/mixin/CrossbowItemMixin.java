@@ -2,7 +2,7 @@ package de.dafuqs.arrowhead.mixin;
 
 import com.llamalad7.mixinextras.injector.ModifyExpressionValue;
 import com.llamalad7.mixinextras.sugar.Local;
-import de.dafuqs.arrowhead.api.ArrowheadCrossbow;
+import de.dafuqs.arrowhead.api.*;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.projectile.ProjectileEntity;
 import net.minecraft.item.CrossbowItem;
@@ -17,17 +17,6 @@ import org.spongepowered.asm.mixin.injection.callback.LocalCapture;
 
 @Mixin(CrossbowItem.class)
 public class CrossbowItemMixin {
-
-	@ModifyExpressionValue(method = "use(Lnet/minecraft/world/World;Lnet/minecraft/entity/player/PlayerEntity;Lnet/minecraft/util/Hand;)Lnet/minecraft/util/TypedActionResult;", at = @At(value = "INVOKE", target = "Lnet/minecraft/item/CrossbowItem;getSpeed(Lnet/minecraft/component/type/ChargedProjectilesComponent;)F"))
-	private float getSpeed(float original, @Local ItemStack stack) {
-		if(stack.getItem() instanceof ArrowheadCrossbow arrowheadCrossbow) {
-			float speedMod = arrowheadCrossbow.getProjectileVelocityModifier(stack);
-			if (speedMod != 1.0) {
-				return (float) Math.ceil(speedMod * original);
-			}
-		}
-		return original;
-	}
 	
 	@Inject(method = "getPullTime(Lnet/minecraft/item/ItemStack;Lnet/minecraft/entity/LivingEntity;)I", at = @At("RETURN"), cancellable = true)
 	private static void getPullTime(ItemStack stack, LivingEntity user, CallbackInfoReturnable<Integer> cir) {
@@ -37,9 +26,22 @@ public class CrossbowItemMixin {
 	}
 	
 	@Inject(method = "shoot(Lnet/minecraft/entity/LivingEntity;Lnet/minecraft/entity/projectile/ProjectileEntity;IFFFLnet/minecraft/entity/LivingEntity;)V",
-			at = @At(value = "INVOKE", target = "Lnet/minecraft/entity/projectile/ProjectileEntity;setVelocity(DDDFF)V", shift = At.Shift.AFTER), locals = LocalCapture.CAPTURE_FAILHARD)
-	private void shoot(LivingEntity shooter, ProjectileEntity projectile, int index, float speed, float divergence, float yaw, LivingEntity target, CallbackInfo ci, Vector3f vector3f) {
+			at = @At(value = "INVOKE", target = "Lnet/minecraft/entity/projectile/ProjectileEntity;setVelocity(DDDFF)V", shift = At.Shift.AFTER))
+	private void shoot(LivingEntity shooter, ProjectileEntity projectile, int index, float speed, float divergence, float yaw, LivingEntity target, CallbackInfo ci, @Local Vector3f vector3f) {
 		projectile.arrowhead$setLastCrossbowVelocity(vector3f);
+	}
+	
+	@Inject(method = "shoot(Lnet/minecraft/entity/LivingEntity;Lnet/minecraft/entity/projectile/ProjectileEntity;IFFFLnet/minecraft/entity/LivingEntity;)V", at = @At(value = "INVOKE", target = "Lnet/minecraft/entity/projectile/ProjectileEntity;setVelocity(DDDFF)V", shift = At.Shift.AFTER))
+	public void arrowhead$handleRangedWeapon(LivingEntity shooter, ProjectileEntity projectile, int index, float speed, float divergence, float yaw, LivingEntity target, CallbackInfo ci, @Local Vector3f vector3f) {
+		ItemStack activeStack = shooter.getActiveItem();
+		
+		if (activeStack.getItem() instanceof ArrowheadCrossbow arrowheadCrossbow) {
+			projectile.setVelocity(vector3f.x(), vector3f.y(), vector3f.z(), speed * arrowheadCrossbow.getProjectileVelocityModifier(activeStack), divergence * arrowheadCrossbow.getDivergenceMod(activeStack));
+		}
+		
+		for(CrossbowShootingCallback callback : CrossbowShootingCallback.callbacks) {
+			callback.trigger(shooter.getWorld(), shooter, activeStack, projectile);
+		}
 	}
 	
 }

@@ -25,7 +25,7 @@
   },
   "custom": {
     "loom:injected_interfaces": {
-      "net/minecraft/class_1676": ["de/dafuqs/arrowhead/api/internal/LastCrossbowVelocityStore"]
+      "net/minecraft/class_1676": [ "de/dafuqs/arrowhead/internal/ProjectileEntityLastCrossbowVelocityStore" ]
     },
     "modmenu": {
       "badges": [ "library" ]
