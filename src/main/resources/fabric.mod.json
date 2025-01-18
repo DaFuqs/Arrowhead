@@ -24,9 +24,7 @@
     "minecraft": ">=1.21"
   },
   "custom": {
-    "loom:injected_interfaces": {
-      "net/minecraft/class_1676": ["de/dafuqs/arrowhead/api/internal/LastCrossbowVelocityStore"]
-    },
+    "loom:injected_interfaces": {},
     "modmenu": {
       "badges": [ "library" ]
     }

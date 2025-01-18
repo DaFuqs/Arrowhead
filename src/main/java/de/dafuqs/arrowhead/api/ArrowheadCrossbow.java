@@ -25,12 +25,4 @@ public interface ArrowheadCrossbow {
 		return 1.0F;
 	}
 	
-	/**
-	 * The lower this value, the more precise projectiles become
-	 * The normal crossbow equals a divergence of 1.0
-	 */
-	default float getDivergenceMod(ItemStack stack) {
-		return 1.0F;
-	}
-	
 }
