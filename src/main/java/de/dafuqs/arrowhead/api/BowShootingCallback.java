@@ -1,12 +1,11 @@
 package de.dafuqs.arrowhead.api;
 
-import net.minecraft.entity.LivingEntity;
-import net.minecraft.entity.projectile.PersistentProjectileEntity;
-import net.minecraft.item.ItemStack;
-import net.minecraft.world.World;
+import net.minecraft.entity.*;
+import net.minecraft.entity.projectile.*;
+import net.minecraft.item.*;
+import net.minecraft.world.*;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 
 public interface BowShootingCallback {
 	
@@ -18,11 +17,10 @@ public interface BowShootingCallback {
 	 * @param world the world
 	 * @param shooter the shooter that shot the bow
 	 * @param weaponStack the bow stack
-	 * @param arrowStack the arrow stack that was shot
 	 * @param remainingUseTicks the remaining use time of the bow at the time of release
-	 * @param persistentProjectileEntity the projectile that was shot (initialized, but not yet spawned in the world)
+	 * @param projectile the projectile that was shot (initialized, but not yet spawned in the world)
 	 */
-	void trigger(World world, LivingEntity shooter, ItemStack weaponStack, ItemStack arrowStack, int remainingUseTicks, PersistentProjectileEntity persistentProjectileEntity);
+	void trigger(World world, LivingEntity shooter, ItemStack weaponStack, int remainingUseTicks, ProjectileEntity projectile);
 	
 	/**
 	 * Register a ProjectileLaunchCallback
