@@ -1,33 +1,21 @@
 package de.dafuqs.arrowhead.mixin.client;
 
-import de.dafuqs.arrowhead.api.ArrowheadBow;
-import de.dafuqs.arrowhead.api.ArrowheadCrossbow;
-import net.fabricmc.api.EnvType;
-import net.fabricmc.api.Environment;
-import net.minecraft.client.MinecraftClient;
-import net.minecraft.client.network.AbstractClientPlayerEntity;
-import net.minecraft.client.network.ClientPlayerEntity;
-import net.minecraft.client.render.VertexConsumerProvider;
-import net.minecraft.client.render.item.HeldItemRenderer;
-import net.minecraft.client.render.model.json.ModelTransformationMode;
-import net.minecraft.client.util.math.MatrixStack;
-import net.minecraft.entity.LivingEntity;
-import net.minecraft.item.CrossbowItem;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
-import net.minecraft.util.Arm;
-import net.minecraft.util.Hand;
-import net.minecraft.util.math.MathHelper;
-import net.minecraft.util.math.RotationAxis;
-import org.spongepowered.asm.mixin.Final;
-import org.spongepowered.asm.mixin.Mixin;
-import org.spongepowered.asm.mixin.Shadow;
-import org.spongepowered.asm.mixin.gen.Invoker;
-import org.spongepowered.asm.mixin.injection.At;
-import org.spongepowered.asm.mixin.injection.Inject;
-import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
-import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
-import org.spongepowered.asm.mixin.injection.callback.LocalCapture;
+import com.llamalad7.mixinextras.sugar.Local;
+import de.dafuqs.arrowhead.api.*;
+import net.fabricmc.api.*;
+import net.minecraft.client.network.*;
+import net.minecraft.client.render.*;
+import net.minecraft.client.render.item.*;
+import net.minecraft.client.render.model.json.*;
+import net.minecraft.client.util.math.*;
+import net.minecraft.entity.*;
+import net.minecraft.item.*;
+import net.minecraft.util.*;
+import net.minecraft.util.math.*;
+import org.spongepowered.asm.mixin.*;
+import org.spongepowered.asm.mixin.gen.*;
+import org.spongepowered.asm.mixin.injection.*;
+import org.spongepowered.asm.mixin.injection.callback.*;
 
 @Environment(EnvType.CLIENT)
 @Mixin(HeldItemRenderer.class)
@@ -51,8 +39,8 @@ public abstract class HeldItemRendererMixin {
 	
 	@Inject(method = "getHandRenderType(Lnet/minecraft/client/network/ClientPlayerEntity;)Lnet/minecraft/client/render/item/HeldItemRenderer$HandRenderType;",
 			at = @At(value = "INVOKE", target = "Lnet/minecraft/item/ItemStack;isOf(Lnet/minecraft/item/Item;)Z"),
-			cancellable = true, locals = LocalCapture.CAPTURE_FAILHARD)
-	private static void arrowhead$getHandRenderType(ClientPlayerEntity player, CallbackInfoReturnable<HeldItemRenderer.HandRenderType> cir, ItemStack itemStack, ItemStack itemStack2) {
+			cancellable = true)
+	private static void arrowhead$getHandRenderType(ClientPlayerEntity player, CallbackInfoReturnable<HeldItemRenderer.HandRenderType> cir, @Local(ordinal = 0) ItemStack itemStack, @Local(ordinal = 1) ItemStack itemStack2) {
 		Item item1 = itemStack.getItem();
 		Item item2 = itemStack2.getItem();
 		boolean bl = item1 instanceof ArrowheadBow || item2 instanceof ArrowheadBow;
@@ -68,8 +56,8 @@ public abstract class HeldItemRendererMixin {
 	
 	@Inject(method = "getUsingItemHandRenderType(Lnet/minecraft/client/network/ClientPlayerEntity;)Lnet/minecraft/client/render/item/HeldItemRenderer$HandRenderType;",
 			at = @At(value = "INVOKE", target = "Lnet/minecraft/item/ItemStack;isOf(Lnet/minecraft/item/Item;)Z"),
-			cancellable = true, locals = LocalCapture.CAPTURE_FAILHARD)
-	private static void arrowhead$getUsingItemHandRenderType(ClientPlayerEntity player, CallbackInfoReturnable<HeldItemRenderer.HandRenderType> cir, ItemStack activeStack, Hand activeHand) {
+			cancellable = true)
+	private static void arrowhead$getUsingItemHandRenderType(ClientPlayerEntity player, CallbackInfoReturnable<HeldItemRenderer.HandRenderType> cir) {
 		ItemStack itemStack = player.getActiveItem();
 		Hand hand = player.getActiveHand();
 		if (itemStack.getItem() instanceof ArrowheadBow || itemStack.getItem() instanceof ArrowheadCrossbow) {
@@ -79,7 +67,7 @@ public abstract class HeldItemRendererMixin {
 	
 	@Inject(method = "isChargedCrossbow(Lnet/minecraft/item/ItemStack;)Z",
 			at = @At(value = "HEAD"),
-			cancellable = true, locals = LocalCapture.CAPTURE_FAILHARD)
+			cancellable = true)
 	private static void arrowhead$isChargedCrossbow(ItemStack stack, CallbackInfoReturnable<Boolean> cir) {
 		if(stack.getItem() instanceof ArrowheadCrossbow && CrossbowItem.isCharged(stack)) {
 			cir.setReturnValue(true);

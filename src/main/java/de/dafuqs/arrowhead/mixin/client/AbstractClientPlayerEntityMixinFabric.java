@@ -3,22 +3,18 @@ package de.dafuqs.arrowhead.mixin.client;
 import de.dafuqs.arrowhead.api.ArrowheadBow;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
-import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.network.AbstractClientPlayerEntity;
-import net.minecraft.item.*;
-import net.minecraft.util.math.MathHelper;
+import net.minecraft.item.ItemStack;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
-import org.spongepowered.asm.mixin.injection.Inject;
-import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
-import org.spongepowered.asm.mixin.injection.callback.LocalCapture;
+import org.spongepowered.asm.mixin.injection.ModifyArg;
 
 @Environment(EnvType.CLIENT)
 @Mixin(AbstractClientPlayerEntity.class)
-public abstract class AbstractClientPlayerEntityMixin {
+public abstract class AbstractClientPlayerEntityMixinFabric {
 	
-	@Inject(method = "getFovMultiplier", at = @At(value = "TAIL"), locals = LocalCapture.CAPTURE_FAILSOFT, cancellable = true)
-	private void arrowhead$applyCustomBowZoom(CallbackInfoReturnable<Float> cir, float f) {
+	@ModifyArg(method = "getFovMultiplier", at = @At(value = "INVOKE", target = "Lnet/minecraft/util/math/MathHelper;lerp(FFF)F"), index = 2)
+	private float arrowhead$applyCustomBowZoom(float delta) {
 		AbstractClientPlayerEntity thisPlayer = (AbstractClientPlayerEntity)(Object) this;
 		ItemStack itemStack = thisPlayer.getActiveItem();
 		if (thisPlayer.isUsingItem() && itemStack.getItem() instanceof ArrowheadBow arrowheadBow) {
@@ -31,11 +27,10 @@ public abstract class AbstractClientPlayerEntityMixin {
 				g *= g;
 			}
 			
-			f *= 1.0F - g * 0.15F;
-			
-			cir.setReturnValue(MathHelper.lerp((MinecraftClient.getInstance().options.getFovEffectScale().getValue()).floatValue(), 1.0F, f));
+			delta *= 1.0F - g * 0.15F;
 		}
 		
+		return delta;
 	}
 
 }
