@@ -13,8 +13,8 @@ import org.spongepowered.asm.mixin.injection.ModifyArg;
 @Mixin(AbstractClientPlayerEntity.class)
 public abstract class AbstractClientPlayerEntityMixinFabric {
 	
-	@ModifyArg(method = "getFovMultiplier", at = @At(value = "INVOKE", target = "Lnet/minecraft/util/math/MathHelper;lerp(FFF)F"), index = 2)
-	private float arrowhead$applyCustomBowZoom(float delta) {
+	@ModifyArg(method = "Lnet/minecraft/client/network/AbstractClientPlayerEntity;getFovMultiplier()F", at = @At(value = "INVOKE", target = "Lnet/minecraft/util/math/MathHelper;lerp(FFF)F"), index = 2)
+	private float arrowhead$applyCustomBowZoomFabric(float delta) {
 		AbstractClientPlayerEntity thisPlayer = (AbstractClientPlayerEntity)(Object) this;
 		ItemStack itemStack = thisPlayer.getActiveItem();
 		if (thisPlayer.isUsingItem() && itemStack.getItem() instanceof ArrowheadBow arrowheadBow) {
