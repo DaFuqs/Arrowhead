@@ -14,7 +14,7 @@ import org.spongepowered.asm.mixin.injection.ModifyArg;
 public abstract class AbstractClientPlayerEntityMixinForge {
 	
 	@ModifyArg(method = "getFovMultiplier", at = @At(value = "INVOKE", target = "Lnet/neoforged/neoforge/client/ClientHooks;getFieldOfViewModifier(Lnet/minecraft/world/entity/player/Player;F)F", remap = false), index = 1)
-	private float arrowhead$applyCustomBowZoom(float delta) {
+	private float arrowhead$applyCustomBowZoomForge(float delta) {
 		AbstractClientPlayerEntity thisPlayer = (AbstractClientPlayerEntity)(Object) this;
 		ItemStack itemStack = thisPlayer.getActiveItem();
 		if (thisPlayer.isUsingItem() && itemStack.getItem() instanceof ArrowheadBow arrowheadBow) {
