@@ -1,0 +1,45 @@
+# TODO: remove modLoader and loaderVersion in 1.21.6+
+modLoader = "javafml" #mandatory
+loaderVersion = "[1,)" #mandatory
+license = "lGPL3"
+
+issueTrackerURL = "https://github.com/DaFuqs/Arrowhead"
+
+[[mods]]
+modId = "arrowhead"
+version = "${version}"
+displayName = "Arrowhead"
+displayURL = "https://github.com/DaFuqs/Arrowhead" #optional
+
+# A file name (in the root of the mod JAR) containing a logo for display
+#logoFile="examplemod.png" #optional
+
+# A text field displayed in the mod UI
+authors = "DaFuqs"
+
+# The description text for the mod (multi line!) (#mandatory)
+description = '''Projectile Weapon Unmojankery'''
+
+# The [[mixins]] block allows you to declare your mixin config to FML so that it gets loaded.
+[[mixins]]
+config = "arrowhead.mixins.json"
+
+# The [[accessTransformers]] block allows you to declare where your AT file is.
+# If this block is omitted, a fallback attempt will be made to load an AT from META-INF/accesstransformer.cfg
+#[[accessTransformers]]
+file = "META-INF/accesstransformer.cfg"
+
+# A dependency - use the . to indicate dependency for a specific modid. Dependencies are optional.
+[[dependencies.arrowhead]] #optional
+modId = "neoforge" #mandatory
+type = "required" #mandatory
+versionRange = "${neoforge_version_range}"
+ordering = "NONE"
+side = "BOTH"
+
+[[dependencies.arrowhead]]
+modId = "minecraft"
+type = "required"
+versionRange = "[${minecraft_version}]"
+ordering = "NONE"
+side = "BOTH"

@@ -1,4 +1,0 @@
-accessWidener	v1	named
-
-accessible  class   net/minecraft/client/render/item/HeldItemRenderer$HandRenderType
-accessible method net/minecraft/item/CrossbowItem calcVelocity (Lnet/minecraft/entity/LivingEntity;Lnet/minecraft/util/math/Vec3d;F)Lorg/joml/Vector3f;

@@ -1,6 +1,7 @@
 package de.dafuqs.arrowhead.api;
 
-import net.minecraft.item.*;
+
+import net.minecraft.world.item.*;
 
 /**
  * Implement this interface to your CrossbowItem to get working reloading/shooting animations equal to a vanilla crossbow

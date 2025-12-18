@@ -2,16 +2,14 @@
   "required": true,
   "minVersion": "0.8",
   "package": "de.dafuqs.arrowhead.mixin",
-  "plugin": "de.dafuqs.arrowhead.MixinConfigPlugin",
   "compatibilityLevel": "JAVA_21",
   "mixins": [
     "BowItemMixin",
     "CrossbowItemMixin"
   ],
   "client": [
-    "client.AbstractClientPlayerEntityMixinFabric",
-    "client.AbstractClientPlayerEntityMixinForge",
-    "client.HeldItemRendererMixin"
+    "client.AbstractClientPlayerMixin",
+    "client.ItemInHandRendererMixin"
   ],
   "injectors": {
     "defaultRequire": 1
