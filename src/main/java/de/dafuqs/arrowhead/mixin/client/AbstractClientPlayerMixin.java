@@ -1,10 +1,11 @@
 package de.dafuqs.arrowhead.mixin.client;
 
-import de.dafuqs.arrowhead.api.*;
-import net.minecraft.client.player.*;
-import net.minecraft.world.item.*;
-import org.spongepowered.asm.mixin.*;
-import org.spongepowered.asm.mixin.injection.*;
+import de.dafuqs.arrowhead.api.ArrowheadBow;
+import net.minecraft.client.player.AbstractClientPlayer;
+import net.minecraft.world.item.ItemStack;
+import org.spongepowered.asm.mixin.Mixin;
+import org.spongepowered.asm.mixin.injection.At;
+import org.spongepowered.asm.mixin.injection.ModifyArg;
 
 @Mixin(AbstractClientPlayer.class)
 public abstract class AbstractClientPlayerMixin {
@@ -15,7 +16,7 @@ public abstract class AbstractClientPlayerMixin {
 		ItemStack itemStack = thisPlayer.getUseItem();
 		if (thisPlayer.isUsingItem() && itemStack.getItem() instanceof ArrowheadBow arrowheadBow) {
 			int i = thisPlayer.getTicksUsingItem();
-			float g = (float) i / arrowheadBow.getZoom(itemStack);
+			float g = (float) i / arrowheadBow.getZoom(itemStack, thisPlayer);
 			
 			if (g > 1.0F) {
 				g = 1.0F;

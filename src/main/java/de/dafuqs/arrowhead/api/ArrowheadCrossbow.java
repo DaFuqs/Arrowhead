@@ -1,7 +1,8 @@
 package de.dafuqs.arrowhead.api;
 
 
-import net.minecraft.world.item.*;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.item.ItemStack;
 
 /**
  * Implement this interface to your CrossbowItem to get working reloading/shooting animations equal to a vanilla crossbow
@@ -14,7 +15,7 @@ public interface ArrowheadCrossbow {
 	 * Note that this directly relates to damage with most projectiles, like arrows
 	 * The normal crossbow equals a velocity mod of 1.0
 	 */
-	default float getProjectileVelocityModifier(ItemStack stack) {
+	default float getProjectileVelocityModifier(ItemStack stack, LivingEntity shooter) {
 		return 1.0F;
 	}
 	
@@ -22,7 +23,7 @@ public interface ArrowheadCrossbow {
 	 * The higher this value, the longer it takes for the crossbow to load
 	 * The normal crossbow equals a pull time mod of 1.0
 	 */
-	default float getPullTimeModifier(ItemStack stack) {
+	default float getPullTimeModifier(ItemStack stack, LivingEntity shooter) {
 		return 1.0F;
 	}
 	
@@ -30,7 +31,7 @@ public interface ArrowheadCrossbow {
 	 * The lower this value, the more precise projectiles become
 	 * The normal crossbow equals a divergence of 1.0
 	 */
-	default float getDivergenceMod(ItemStack stack) {
+	default float getDivergenceMod(ItemStack stack, LivingEntity shooter) {
 		return 1.0F;
 	}
 	
